@@ -1,0 +1,172 @@
+/* pages/myrecord/myrecord.wxss - 我的报名记录样式 */
+
+/* 页面容器：纵向 flex，让反馈入口固定在底部 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 标签栏 */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  padding: 6rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 10rpx;
+  transition: all 0.3s ease;
+}
+
+.tab-active {
+  background: #4A90D9;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 记录卡片 */
+.record-card {
+  padding: 24rpx;
+}
+
+.record-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.record-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  margin-right: 16rpx;
+  line-height: 1.4;
+}
+
+.record-status {
+  font-size: 24rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  flex-shrink: 0;
+}
+
+.status-active {
+  background: #E8F8EE;
+  color: #07C160;
+}
+
+.status-cancelled {
+  background: #F5F5F5;
+  color: #B0B0B0;
+}
+
+.record-body {
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 16rpx;
+}
+
+.record-info {
+  display: flex;
+  align-items: center;
+  padding: 4rpx 0;
+}
+
+.record-info .info-icon {
+  font-size: 24rpx;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+
+.record-info .info-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 操作按钮 */
+.record-footer {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 加载状态 */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  color: #999;
+  flex: 1;
+}
+
+/* 空状态：撑满剩余空间并居中 */
+.empty-state {
+  flex: 1;
+  justify-content: center;
+}
+
+/* 记录列表：撑满剩余空间 */
+.record-list {
+  flex: 1;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #eee;
+  border-top-color: #4A90D9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========== 意见反馈入口 ========== */
+.feedback-entry {
+  display: flex;
+  align-items: center;
+  margin: 24rpx;
+  padding: 28rpx 32rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s;
+}
+
+.feedback-entry:active {
+  transform: scale(0.98);
+}
+
+.feedback-entry-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.feedback-entry-text {
+  flex: 1;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1D2129;
+}
+
+.feedback-entry-arrow {
+  font-size: 32rpx;
+  color: #86909C;
+}

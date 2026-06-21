@@ -1,0 +1,88 @@
+<!--pages/myrecord/myrecord.wxml - 我的报名记录-->
+<view class="container">
+  <!-- 顶部标签栏 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{currentTab === 'all' ? 'tab-active' : ''}}"
+      data-tab="all"
+      bindtap="switchTab"
+    >全部</view>
+    <view
+      class="tab-item {{currentTab === 'upcoming' ? 'tab-active' : ''}}"
+      data-tab="upcoming"
+      bindtap="switchTab"
+    >进行中</view>
+    <view
+      class="tab-item {{currentTab === 'ended' ? 'tab-active' : ''}}"
+      data-tab="ended"
+      bindtap="switchTab"
+    >已结束</view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空数据状态 -->
+  <view wx:elif="{{noData}}" class="empty-state">
+    <text class="empty-icon">📄</text>
+    <text class="empty-text">暂无报名记录</text>
+    <text class="empty-sub">快去首页看看有什么有趣的活动吧</text>
+  </view>
+
+  <!-- 记录列表 -->
+  <view wx:else class="record-list">
+    <view
+      class="card record-card"
+      wx:for="{{recordList}}"
+      wx:key="_id"
+    >
+      <!-- 记录头部 -->
+      <view class="record-header">
+        <view class="record-title">{{item.activityTitle}}</view>
+        <view class="record-status {{item.status === 'active' ? 'status-active' : 'status-cancelled'}}">
+          {{item.statusText}}
+        </view>
+      </view>
+
+      <!-- 记录详情 -->
+      <view class="record-body">
+        <view class="record-info" wx:if="{{item.activityTime !== '暂无'}}">
+          <text class="info-icon">🕐</text>
+          <text class="info-text">{{item.activityTime}}</text>
+        </view>
+        <view class="record-info" wx:if="{{item.activityLocation}}">
+          <text class="info-icon">📍</text>
+          <text class="info-text">{{item.activityLocation}}</text>
+        </view>
+        <view class="record-info">
+          <text class="info-icon">📅</text>
+          <text class="info-text">报名时间：{{item.createTimeDisplay}}</text>
+        </view>
+        <view class="record-info" wx:if="{{item.remark}}">
+          <text class="info-icon">📝</text>
+          <text class="info-text">备注：{{item.remark}}</text>
+        </view>
+      </view>
+
+      <!-- 取消报名按钮 -->
+      <view class="record-footer" wx:if="{{item.status === 'active' && item.activityStatus !== 'ended'}}">
+        <button
+          class="btn-danger btn-small"
+          data-id="{{item._id}}"
+          data-activityid="{{item.activityId}}"
+          bindtap="cancelSignup"
+        >取消报名</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 意见反馈入口 -->
+  <view class="feedback-entry" bindtap="goToFeedback">
+    <text class="feedback-entry-icon">💬</text>
+    <text class="feedback-entry-text">意见反馈</text>
+    <text class="feedback-entry-arrow">›</text>
+  </view>
+</view>

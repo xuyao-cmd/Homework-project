@@ -1,0 +1,79 @@
+<!--pages/signup/signup.wxml - 活动报名页-->
+<view class="container">
+  <!-- 活动信息提示 -->
+  <view class="tip-card" wx:if="{{activityTitle}}">
+    <text class="tip-label">报名活动：</text>
+    <text class="tip-value">{{activityTitle}}</text>
+  </view>
+
+  <!-- 报名表单 -->
+  <view class="card form-card">
+    <view class="form-title">请填写报名信息</view>
+
+    <view class="form-group">
+      <view class="form-label">
+        <text class="required">*</text> 姓名
+      </view>
+      <input
+        class="form-input"
+        placeholder="请输入您的姓名"
+        value="{{userName}}"
+        bindinput="onNameInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">
+        <text class="required">*</text> 学号
+      </view>
+      <input
+        class="form-input"
+        placeholder="请输入您的学号"
+        value="{{stuId}}"
+        bindinput="onStuIdInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">
+        <text class="required">*</text> 联系方式
+      </view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="请输入手机号码"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+        maxlength="11"
+      />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">备注（选填）</view>
+      <textarea
+        class="form-textarea"
+        placeholder="如有特殊需求请在此备注..."
+        value="{{remark}}"
+        bindinput="onRemarkInput"
+        maxlength="200"
+      />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-wrap">
+    <button
+      class="btn-primary btn-submit"
+      bindtap="formSubmit"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+    >{{submitting ? '提交中...' : '确认报名'}}</button>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="notice">
+    <text class="notice-text">💡 提交前请确认信息准确无误，每人仅限报名一次</text>
+  </view>
+</view>

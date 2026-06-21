@@ -1,0 +1,117 @@
+/* pages/signup/signup.wxss - 活动报名页样式 */
+
+/* 活动提示 */
+.tip-card {
+  background: #E8F4FD;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  border-left: 6rpx solid #4A90D9;
+}
+
+.tip-label {
+  font-size: 28rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.tip-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  margin-left: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 表单卡片 */
+.form-card {
+  padding: 32rpx 28rpx;
+}
+
+.form-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 32rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.required {
+  color: #E54545;
+  margin-right: 4rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  border: 2rpx solid transparent;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #4A90D9;
+  background: #fff;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 160rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  border: 2rpx solid transparent;
+}
+
+.form-textarea:focus {
+  border-color: #4A90D9;
+  background: #fff;
+}
+
+/* 提交按钮 */
+.submit-wrap {
+  margin-top: 40rpx;
+}
+
+.btn-submit {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.3);
+}
+
+/* 提示 */
+.notice {
+  margin-top: 32rpx;
+  text-align: center;
+}
+
+.notice-text {
+  font-size: 24rpx;
+  color: #bbb;
+}

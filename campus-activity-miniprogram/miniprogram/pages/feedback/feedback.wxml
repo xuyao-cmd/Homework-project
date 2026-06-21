@@ -1,0 +1,56 @@
+<!--pages/feedback/feedback.wxml - 意见反馈-->
+<view class="page-body">
+  <!-- 顶部说明 -->
+  <view class="feedback-header">
+    <text class="feedback-icon">💬</text>
+    <text class="feedback-title">意见反馈</text>
+    <text class="feedback-desc">您的每一条建议都是我们进步的动力</text>
+  </view>
+
+  <!-- 表单卡片 -->
+  <view class="form-card">
+    <!-- 反馈类型 -->
+    <view class="form-group">
+      <view class="form-label"><text class="required">*</text>反馈类型</view>
+      <picker mode="selector" range="{{feedbackTypes}}" value="{{typeIndex}}" bindchange="onTypeChange">
+        <view class="form-picker">
+          <text>{{feedbackType}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 反馈内容 -->
+    <view class="form-group">
+      <view class="form-label"><text class="required">*</text>反馈内容</view>
+      <textarea
+        class="form-textarea"
+        placeholder="请详细描述您的建议或遇到的问题..."
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="500"
+      />
+      <text class="char-count">{{content.length || 0}}/500</text>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-group">
+      <view class="form-label">联系方式（选填）</view>
+      <input
+        class="form-input"
+        placeholder="手机号 / 邮箱 / 微信，方便我们回复您"
+        value="{{contact}}"
+        bindinput="onContactInput"
+        maxlength="50"
+      />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-wrap">
+    <view class="btn-submit {{submitting ? 'btn-disabled' : ''}}" bindtap="submitFeedback">
+      {{submitting ? '提交中...' : '提交反馈'}}
+    </view>
+    <text class="submit-tip">提交后管理员将在管理后台查看您的反馈</text>
+  </view>
+</view>

@@ -1,0 +1,248 @@
+<!--pages/admin/admin.wxml - 管理员后台-->
+
+<!-- 自定义顶部导航栏 -->
+<view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+  <view class="nav-content" style="height: {{navContentHeight}}px;">
+    <text class="nav-title">管理后台</text>
+  </view>
+</view>
+
+<!-- 页面主体 -->
+<view class="page-body" style="padding-top: {{pagePaddingTop}}px;">
+
+  <!-- ===== 登录界面 ===== -->
+  <view wx:if="{{!isLoggedIn}}" class="login-wrap">
+    <view class="login-card">
+      <view class="login-icon">🔐</view>
+      <view class="login-title">管理员登录</view>
+      <view class="login-desc">请输入管理密码以进入后台</view>
+      <input
+        class="login-input"
+        type="password"
+        placeholder="请输入管理员密码"
+        value="{{adminPassword}}"
+        bindinput="onPasswordInput"
+        password
+      />
+      <view wx:if="{{showLoginError}}" class="login-error">密码错误，请重试</view>
+      <view class="login-btn" bindtap="onLogin">登 录</view>
+    </view>
+  </view>
+
+  <!-- ===== 管理界面 ===== -->
+  <view wx:else>
+    <!-- 顶部操作栏 -->
+    <view class="action-bar">
+      <text class="action-title">活动管理</text>
+      <view class="action-btns">
+        <view class="role-badge" wx:if="{{!isAdminUser}}">学生模式</view>
+        <view class="btn-logout" bindtap="logout">退出</view>
+        <view wx:if="{{isAdminUser}}" class="btn-add" bindtap="goToPublish">+ 发布活动</view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 空数据 -->
+    <view wx:elif="{{noData}}" class="empty-wrap">
+      <image class="empty-img" src="/images/empty_no_activity.png.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无创建活动</text>
+      <text class="empty-sub" wx:if="{{isAdminUser}}">点击「发布活动」新增</text>
+      <text class="empty-sub" wx:else>管理员尚未发布活动</text>
+    </view>
+
+    <!-- 活动列表 -->
+    <view wx:else class="admin-list">
+      <view class="card admin-card" wx:for="{{activityList}}" wx:key="_id">
+        <!-- 卡片头部：标题 + 状态 -->
+        <view class="card-header">
+          <text class="card-title">{{item.title}}</text>
+          <view class="status-tag {{item.statusClass}}">
+            <image class="status-tag-icon" src="{{item.statusIcon}}" mode="aspectFit"></image>
+            <text>{{item.statusText}}</text>
+          </view>
+        </view>
+
+        <!-- 信息行 -->
+        <view class="info-row">
+          <image class="info-icon" src="/images/icon_clock_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">{{item.displayTime}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.address}}">
+          <image class="info-icon" src="/images/icon_location_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">{{item.address}}</text>
+        </view>
+        <view class="info-row">
+          <image class="info-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">已报名 {{item.participants}}{{item.maxP > 0 ? '/' + item.maxP : ''}} 人</text>
+        </view>
+
+        <!-- 卡片底部操作按钮 -->
+        <!-- 管理员：全功能按钮 -->
+        <view wx:if="{{isAdminUser}}" class="card-actions">
+          <view class="btn-action btn-outline-action" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="viewSignupList">查看名单</view>
+          <view class="btn-edit-action" data-id="{{item._id}}" bindtap="openEditModal">编辑</view>
+          <view class="btn-action btn-danger-action" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="deleteActivity">删除</view>
+        </view>
+        <!-- 普通学生：仅可查看名单 -->
+        <view wx:else class="card-actions">
+          <view class="btn-action btn-outline-action" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="viewSignupList">查看名单</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 意见反馈入口 ===== -->
+    <view class="feedback-section" wx:if="{{isAdminUser}}">
+      <view class="feedback-title-bar" bindtap="goToFeedbackMgr">
+        <view class="feedback-title-left">
+          <text class="feedback-icon-title">💬</text>
+          <text class="feedback-title-text">意见反馈</text>
+        </view>
+        <view class="feedback-title-right">
+          <view class="feedback-badge-pending" wx:if="{{feedbackUnread > 0}}">
+            <text>{{feedbackUnread}} 条待处理</text>
+          </view>
+          <text class="feedback-arrow">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- ========== 发布/编辑活动弹窗（美化版） ========== -->
+<view wx:if="{{showModal}}" class="modal-mask" bindtap="closeModal">
+  <view class="modal-dialog" catchtap="">
+    <!-- 弹窗头部 -->
+    <view class="modal-header">
+      <text class="modal-title">{{modalTitle}}</text>
+      <view class="modal-close-btn" bindtap="closeModal">
+        <text class="close-icon">✕</text>
+      </view>
+    </view>
+
+    <!-- 弹窗主体 - 可滚动 -->
+    <scroll-view class="modal-body" scroll-y enhanced show-scrollbar="{{false}}">
+      <!-- 活动标题 -->
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>活动标题</view>
+        <view class="form-field-icon-row">
+          <image class="field-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+          <input class="field-input" placeholder="请输入活动标题" value="{{formTitle}}" data-field="formTitle" bindinput="onFieldChange" maxlength="50"/>
+        </view>
+      </view>
+
+      <!-- 活动时间 -->
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>活动时间</view>
+        <view class="form-field-icon-row">
+          <image class="field-icon" src="/images/icon_clock_line.png.png" mode="aspectFit"></image>
+          <picker mode="date" value="{{formStartTime}}" data-field="formStartTime" bindchange="onFieldChange">
+            <view class="field-picker {{formStartTime ? '' : 'picker-placeholder'}}">{{formStartTime || '开始日期'}}</view>
+          </picker>
+          <text class="time-sep">至</text>
+          <picker mode="date" value="{{formEndTime}}" data-field="formEndTime" bindchange="onFieldChange">
+            <view class="field-picker {{formEndTime ? '' : 'picker-placeholder'}}">{{formEndTime || '结束日期'}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <!-- 活动地址 -->
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>活动地址</view>
+        <view class="form-field-icon-row">
+          <image class="field-icon" src="/images/icon_location_line.png.png" mode="aspectFit"></image>
+          <input class="field-input" placeholder="请输入活动地点" value="{{formLocation}}" data-field="formLocation" bindinput="onFieldChange" maxlength="100"/>
+        </view>
+      </view>
+
+      <!-- 活动详情 -->
+      <view class="form-group">
+        <view class="form-label">活动详情</view>
+        <textarea class="field-textarea" placeholder="请输入活动详细介绍、注意事项等..." value="{{formDescription}}" data-field="formDescription" bindinput="onFieldChange" maxlength="500"/>
+      </view>
+
+      <!-- 分割线：更多设置 -->
+      <view class="form-divider">
+        <text class="divider-text">更多设置（选填）</text>
+      </view>
+
+      <!-- 主办方 -->
+      <view class="form-group">
+        <view class="form-label">主办方</view>
+        <input class="field-input-simple" placeholder="请输入主办方名称" value="{{formOrganizer}}" data-field="formOrganizer" bindinput="onFieldChange" maxlength="50"/>
+      </view>
+
+      <!-- 限制人数 -->
+      <view class="form-group">
+        <view class="form-label">限制人数（0为不限）</view>
+        <input class="field-input-simple" type="number" placeholder="0表示不限制" value="{{formMaxParticipants}}" data-field="formMaxParticipants" bindinput="onFieldChange"/>
+      </view>
+
+      <!-- 活动分类 -->
+      <view class="form-group">
+        <view class="form-label">活动分类</view>
+        <picker mode="selector" range="{{categoryOptions}}" value="{{categoryOptions.indexOf(formCategory) >= 0 ? categoryOptions.indexOf(formCategory) : 0}}" bindchange="onFieldChange" data-field="formCategory">
+          <view class="field-picker-simple">{{formCategory}}</view>
+        </picker>
+      </view>
+
+      <!-- 活动状态 -->
+      <view class="form-group">
+        <view class="form-label">活动状态</view>
+        <picker mode="selector" range="{{['即将开始', '进行中', '已结束']}}" value="{{formStatus === 'upcoming' ? 0 : (formStatus === 'ongoing' ? 1 : 2)}}" bindchange="onFieldChange" data-field="formStatus">
+          <view class="field-picker-simple">{{formStatus === 'upcoming' ? '即将开始' : (formStatus === 'ongoing' ? '进行中' : '已结束')}}</view>
+        </picker>
+      </view>
+    </scroll-view>
+
+    <!-- 弹窗底部按钮 -->
+    <view class="modal-footer">
+      <view class="btn-cancel" bindtap="closeModal">取消</view>
+      <view class="btn-submit" bindtap="submitActivity">{{isEditing ? '保存修改' : '确认发布'}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- ========== 报名名单弹窗 ========== -->
+<view wx:if="{{showSignupModal}}" class="modal-mask" bindtap="closeSignupModal">
+  <view class="modal-dialog signup-dialog" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">{{modalTitle}}</text>
+      <view class="modal-close-btn" bindtap="closeSignupModal">
+        <text class="close-icon">✕</text>
+      </view>
+    </view>
+
+    <scroll-view class="modal-body" scroll-y enhanced show-scrollbar="{{false}}">
+      <view wx:if="{{signupLoading}}" class="loading-wrap">
+        <text>加载中...</text>
+      </view>
+      <view wx:elif="{{signupList.length === 0}}" class="empty-state" style="padding: 60rpx 0;">
+        <text class="empty-text">暂无报名记录</text>
+      </view>
+      <view wx:else class="signup-table">
+        <view class="table-header">
+          <text class="table-th th-name">姓名</text>
+          <text class="table-th th-id">学号</text>
+          <text class="table-th th-phone">联系方式</text>
+          <text class="table-th th-time">报名时间</text>
+        </view>
+        <view class="table-row" wx:for="{{signupList}}" wx:key="_id">
+          <text class="table-td th-name">{{item.userName}}</text>
+          <text class="table-td th-id">{{item.stuId}}</text>
+          <text class="table-td th-phone">{{item.phone}}</text>
+          <text class="table-td th-time">{{item.createTimeDisplay}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="modal-footer signup-footer">
+      <text class="total-count">共 {{signupList.length}} 人已报名</text>
+      <view class="btn-submit" bindtap="closeSignupModal">关闭</view>
+    </view>
+  </view>
+</view>

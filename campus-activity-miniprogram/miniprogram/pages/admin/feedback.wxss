@@ -1,0 +1,324 @@
+/* pages/admin/feedback.wxss - 意见反馈管理 */
+/* 页面背景色由 app 全局控制 */
+
+.page-container {
+  padding: 24rpx 28rpx 40rpx;
+  min-height: 100vh;
+}
+
+/* ========== 统计卡片栏 ========== */
+.stats-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+
+.stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28rpx 16rpx;
+  border-radius: 20rpx;
+  transition: transform 0.15s;
+}
+
+.stat-card:active {
+  transform: scale(0.96);
+}
+
+.stat-total {
+  background: linear-gradient(135deg, #E8F2FF 0%, #D6E8FF 100%);
+}
+
+.stat-pending {
+  background: linear-gradient(135deg, #FFF1F0 0%, #FFE4E0 100%);
+}
+
+.stat-done {
+  background: linear-gradient(135deg, #F0F9EB 0%, #E6F7DD 100%);
+}
+
+.stat-num {
+  font-size: 48rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.stat-total .stat-num { color: #4096FF; }
+.stat-pending .stat-num { color: #E53E3E; }
+.stat-done .stat-num { color: #52C41A; }
+
+.stat-label {
+  font-size: 24rpx;
+  color: #86909C;
+  margin-top: 6rpx;
+  font-weight: 500;
+}
+
+/* ========== 筛选标签栏 ========== */
+.filter-tabs {
+  display: flex;
+  background: #F2F3F5;
+  border-radius: 16rpx;
+  padding: 6rpx;
+  margin-bottom: 24rpx;
+  gap: 6rpx;
+}
+
+.filter-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #86909C;
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+}
+
+.filter-active {
+  background: #FFFFFF;
+  color: #4096FF;
+  font-weight: 700;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.06);
+}
+
+/* ========== 反馈列表 ========== */
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+/* 反馈卡片 */
+.fb-card {
+  display: flex;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.fb-card:active {
+  transform: scale(0.985);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 左侧状态条 */
+.fb-stripe {
+  width: 8rpx;
+  flex-shrink: 0;
+  border-radius: 4rpx;
+}
+
+.fb-pending .fb-stripe {
+  background: linear-gradient(180deg, #FF6B6B 0%, #E53E3E 100%);
+}
+
+.fb-resolved .fb-stripe {
+  background: linear-gradient(180deg, #6DD400 0%, #52C41A 100%);
+}
+
+/* 右侧内容区 */
+.fb-body {
+  flex: 1;
+  padding: 28rpx 28rpx 28rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+/* 顶部行 */
+.fb-top-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  flex-wrap: wrap;
+}
+
+.fb-type-tag {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  background: linear-gradient(135deg, #E8F2FF 0%, #EFF6FF 100%);
+  color: #4096FF;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 8rpx 16rpx;
+  border-radius: 10rpx;
+}
+
+.fb-status-tag {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 8rpx 16rpx;
+  border-radius: 10rpx;
+}
+
+.fb-status-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+}
+
+.fb-status-tag.pending {
+  background: #FFF1F0;
+  color: #E53E3E;
+}
+
+.fb-status-tag.pending .fb-status-dot {
+  background: #E53E3E;
+  box-shadow: 0 0 8rpx rgba(229, 62, 62, 0.4);
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.fb-status-tag.resolved {
+  background: #F0F9EB;
+  color: #52C41A;
+}
+
+.fb-status-tag.resolved .fb-status-dot {
+  background: #52C41A;
+}
+
+.fb-time {
+  font-size: 24rpx;
+  color: #C9CDD4;
+  margin-left: auto;
+}
+
+/* 反馈内容气泡 */
+.fb-content {
+  background: #F8FAFB;
+  border-radius: 14rpx;
+  padding: 22rpx 24rpx;
+  font-size: 28rpx;
+  color: #2D3748;
+  line-height: 1.7;
+  word-break: break-all;
+  position: relative;
+}
+
+.fb-content::before {
+  content: '';
+  position: absolute;
+  top: -12rpx;
+  left: 24rpx;
+  border-left: 10rpx solid transparent;
+  border-right: 10rpx solid transparent;
+  border-bottom: 12rpx solid #F8FAFB;
+}
+
+/* 底部行 */
+.fb-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.fb-contact {
+  font-size: 24rpx;
+  color: #86909C;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.fb-contact-icon {
+  font-size: 26rpx;
+}
+
+.fb-spacer {
+  flex: 1;
+}
+
+/* 处理按钮 */
+.fb-btn-resolve {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: linear-gradient(135deg, #4096FF 0%, #1677FF 100%);
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 14rpx 28rpx;
+  border-radius: 28rpx;
+  box-shadow: 0 4rpx 16rpx rgba(64, 150, 255, 0.35);
+  transition: all 0.2s;
+}
+
+.fb-btn-resolve:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(64, 150, 255, 0.25);
+}
+
+.fb-btn-icon {
+  font-size: 28rpx;
+}
+
+/* ========== 加载 & 空状态 ========== */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  gap: 20rpx;
+}
+
+.loading-spinner {
+  width: 48rpx;
+  height: 48rpx;
+  border: 4rpx solid #E8E8E8;
+  border-top-color: #4096FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: #86909C;
+}
+
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  gap: 12rpx;
+}
+
+.empty-wrap.small {
+  padding: 80rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+}
+
+.empty-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #4E5969;
+}
+
+.empty-sub {
+  font-size: 24rpx;
+  color: #C9CDD4;
+}

@@ -1,0 +1,105 @@
+<!--pages/publish/publish.wxml-->
+
+<!-- 自定义顶部导航栏 -->
+<view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+  <view class="nav-content" style="height: {{navContentHeight}}px;">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">发布新校园活动</text>
+  </view>
+</view>
+
+<!-- 页面主体 -->
+<view class="page-body" style="padding-top: {{pagePaddingTop}}px;">
+  <scroll-view scroll-y class="form-scroll">
+    <!-- 活动标题 -->
+    <view class="form-group">
+      <view class="form-label">
+        <image class="label-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+        <text class="required">*</text>活动标题
+      </view>
+      <input class="form-input" placeholder="请填写活动完整名称" value="{{title}}" bindinput="onTitleInput" maxlength="50"/>
+    </view>
+
+    <!-- 活动分类 -->
+    <view class="form-group">
+      <view class="form-label">
+        <image class="label-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+        <text class="required">*</text>活动分类
+      </view>
+      <picker mode="selector" range="{{categoryList}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="form-picker {{categoryIndex === -1 ? 'picker-placeholder' : ''}}">
+          {{categoryIndex === -1 ? '请选择活动分类' : categoryList[categoryIndex]}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 活动时间 -->
+    <view class="form-group">
+      <view class="form-label">
+        <image class="label-icon" src="/images/icon_clock_line.png.png" mode="aspectFit"></image>
+        <text class="required">*</text>活动时间
+      </view>
+      <view class="time-row">
+        <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange">
+          <view class="form-picker {{!startDate ? 'picker-placeholder' : ''}}">{{startDate || '开始日期'}}</view>
+        </picker>
+        <text class="time-sep">至</text>
+        <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange">
+          <view class="form-picker {{!endDate ? 'picker-placeholder' : ''}}">{{endDate || '结束日期'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 活动地址 -->
+    <view class="form-group">
+      <view class="form-label">
+        <image class="label-icon" src="/images/icon_location_line.png.png" mode="aspectFit"></image>
+        <text class="required">*</text>活动地址
+      </view>
+      <input class="form-input" placeholder="填写教学楼/操场/活动中心等具体地点" value="{{address}}" bindinput="onAddressInput" maxlength="100"/>
+    </view>
+
+    <!-- 活动状态 -->
+    <view class="form-group">
+      <view class="form-label">
+        <image class="label-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+        <text class="required">*</text>活动状态
+      </view>
+      <picker mode="selector" range="{{statusList}}" value="{{statusIndex}}" bindchange="onStatusChange">
+        <view class="form-picker {{statusIndex === -1 ? 'picker-placeholder' : ''}}">
+          {{statusIndex === -1 ? '选择活动状态' : statusList[statusIndex]}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 活动详情 -->
+    <view class="form-group">
+      <view class="form-label">活动详情介绍</view>
+      <textarea class="form-textarea" placeholder="填写活动内容、要求、注意事项" value="{{details}}" bindinput="onDetailsInput" maxlength="500"/>
+    </view>
+
+    <!-- 上传横幅图 -->
+    <view class="form-group">
+      <view class="form-label">活动横幅图片</view>
+      <view class="upload-wrap" bindtap="uploadBanner">
+        <view wx:if="{{!bannerUrl}}" class="upload-placeholder">
+          <text class="upload-icon">+</text>
+          <text class="upload-text">点击上传活动横幅图</text>
+        </view>
+        <image wx:else class="banner-preview" src="{{bannerUrl}}" mode="aspectFill"></image>
+      </view>
+      <text wx:if="{{!bannerUrl}}" class="upload-tip">未上传将使用默认banner</text>
+    </view>
+  </scroll-view>
+
+  <!-- 隐藏的 canvas 用于图片裁剪（offscreenCanvas 不可用时的备用方案） -->
+<canvas type="2d" id="cropCanvas" class="crop-canvas"></canvas>
+
+<!-- 底部操作按钮 -->
+  <view class="bottom-btns">
+    <view class="btn-cancel" bindtap="goBack">取消</view>
+    <view class="btn-submit" bindtap="submitActivity">确认发布</view>
+  </view>
+</view>

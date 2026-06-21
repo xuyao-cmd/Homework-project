@@ -1,0 +1,162 @@
+<!--pages/index/index.wxml - 首页活动列表-->
+
+<!-- 自定义顶部导航栏 -->
+<view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+  <view class="nav-content" style="height: {{navContentHeight}}px;">
+    <image class="nav-icon" src="/images/icon_book_small.png.png" mode="aspectFit"></image>
+    <view class="nav-title-group">
+      <text class="nav-title">校园活动</text>
+      <text class="nav-subtitle">发现精彩校园生活</text>
+    </view>
+  </view>
+</view>
+
+<!-- 页面主体（留出导航栏空间） -->
+<view class="page-body" style="padding-top: {{pagePaddingTop}}px;">
+
+  <!-- ===== 轮播图：最热门活动 ===== -->
+  <swiper class="swiper-banner" indicator-dots autoplay circular interval="4000" duration="500" wx:if="{{swiperList.length > 0}}">
+    <swiper-item wx:for="{{swiperList}}" wx:key="id" data-id="{{item.activityId}}" bindtap="goToDetail">
+      <image class="swiper-img" src="{{item.image}}" mode="aspectFill" lazy-load></image>
+      <view class="swiper-title">{{item.title}}</view>
+    </swiper-item>
+  </swiper>
+
+  <!-- ===== 搜索框 ===== -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon-text">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索活动标题"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        confirm-type="search"
+      />
+      <view wx:if="{{searchKeyword}}" class="search-clear" bindtap="onClearSearch">✕</view>
+    </view>
+    <view class="search-btn" bindtap="onSearchConfirm">搜索</view>
+  </view>
+
+  <!-- ===== 分类标签栏 ===== -->
+  <scroll-view class="category-bar" scroll-x enhanced show-scrollbar="{{false}}">
+    <view
+      class="category-item {{currentCategory === item ? 'category-active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      data-category="{{item}}"
+      bindtap="onCategoryTap"
+    >{{item}}</view>
+  </scroll-view>
+
+  <!-- ===== 热门活动 ===== -->
+  <view wx:if="{{showHotSection && hotActivities.length > 0 && !isFilterMode}}" class="hot-section">
+    <view class="section-header">
+      <text class="section-title">🔥 热门活动</text>
+      <text class="section-sub">报名人数最多</text>
+    </view>
+    <scroll-view class="hot-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view
+        class="hot-card"
+        wx:for="{{hotActivities}}"
+        wx:key="_id"
+        data-id="{{item._id}}"
+        bindtap="goToDetail"
+      >
+        <image class="hot-img" src="{{item.bannerImage}}" mode="aspectFill"></image>
+        <view class="hot-info">
+          <text class="hot-title">{{item.title}}</text>
+          <text class="hot-meta">{{item.displayTime}}</text>
+          <view class="hot-count">
+            <text class="hot-count-num">{{item.signupCount || 0}}</text>
+            <text class="hot-count-text">人已报名</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ===== 活动列表 ===== -->
+  <view class="list-section-header" wx:if="{{!noData || isFilterMode}}">
+    <text class="section-title">📋 活动列表</text>
+    <text wx:if="{{isFilterMode}}" class="filter-tag">{{currentCategory !== '全部' ? currentCategory : '搜索结果'}}</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空数据状态 -->
+  <view wx:elif="{{noData}}" class="empty-wrap">
+    <image class="empty-img" src="/images/empty_no_activity.png.png" mode="aspectFit"></image>
+    <text class="empty-text">{{isFilterMode ? '未找到匹配的活动' : '暂无校园活动，敬请期待'}}</text>
+    <text wx:if="{{isFilterMode}}" class="empty-sub" bindtap="onClearSearch">点击清除筛选</text>
+  </view>
+
+  <!-- 活动列表 -->
+  <view wx:else class="activity-list">
+    <view
+      class="card activity-card"
+      wx:for="{{activityList}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      bindtap="goToDetail"
+    >
+      <!-- 卡片顶部 Banner 横幅 -->
+      <view class="card-banner">
+        <image class="banner-img" src="{{item.bannerImage}}" mode="widthFix" lazy-load></image>
+        <!-- 右上角状态标签 -->
+        <view class="status-tag {{item.statusClass}}">
+          <image class="status-tag-icon" src="{{item.statusIcon}}" mode="aspectFit"></image>
+          <text>{{item.statusText}}</text>
+        </view>
+        <!-- 分类标签 -->
+        <view class="category-tag" wx:if="{{item.category}}">{{item.category}}</view>
+      </view>
+
+      <!-- 卡片信息区 -->
+      <view class="card-info">
+        <!-- 活动标题 -->
+        <view class="card-title">{{item.title}}</view>
+
+        <!-- 时间行 -->
+        <view class="info-row">
+          <image class="info-icon" src="/images/icon_clock_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">{{item.displayTime}}</text>
+        </view>
+
+        <!-- 地点行 -->
+        <view class="info-row" wx:if="{{item.address}}">
+          <image class="info-icon" src="/images/icon_location_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">{{item.address}}</text>
+        </view>
+
+        <!-- 介绍行 -->
+        <view class="info-row">
+          <image class="info-icon" src="/images/icon_info_line.png.png" mode="aspectFit"></image>
+          <text class="info-text">{{item.shortDetails}}</text>
+        </view>
+      </view>
+
+      <!-- 卡片底部操作按钮 -->
+      <view class="card-actions">
+        <view class="btn-primary-action" data-id="{{item._id}}" catchtap="goToDetail">
+          <text>立即报名</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view wx:if="{{hasMore && !loading && !noData && !isFilterMode}}" class="loading-more" bindtap="loadMore">
+    <text>上拉加载更多</text>
+  </view>
+
+  <!-- 已加载全部 -->
+  <view wx:if="{{!hasMore && !loading && !noData && !isFilterMode}}" class="loading-more all-loaded">
+    <text>— 已加载全部 —</text>
+  </view>
+</view>

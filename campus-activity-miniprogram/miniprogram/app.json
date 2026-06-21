@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/signup/signup",
+    "pages/myrecord/myrecord",
+    "pages/admin/admin",
+    "pages/publish/publish",
+    "pages/feedback/feedback",
+    "pages/admin/feedback"
+  ],
+  "window": {
+    "backgroundColor": "#F0F4FA",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4096FF",
+    "navigationBarTitleText": "校园活动管理",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#A0AEC0",
+    "selectedColor": "#4096FF",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/首页.png",
+        "selectedIconPath": "images/首页 (1).png"
+      },
+      {
+        "pagePath": "pages/myrecord/myrecord",
+        "text": "我的报名",
+        "iconPath": "images/报名.png",
+        "selectedIconPath": "images/报名 (1).png"
+      },
+      {
+        "pagePath": "pages/admin/admin",
+        "text": "管理",
+        "iconPath": "images/管理员.png",
+        "selectedIconPath": "images/管理员 (1).png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

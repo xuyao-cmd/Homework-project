@@ -1,0 +1,148 @@
+/* pages/feedback/feedback.wxss - 意见反馈样式 */
+
+.page-body {
+  background: #F0F4FA;
+  min-height: 100vh;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部说明 */
+.feedback-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0 32rpx;
+}
+
+.feedback-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.feedback-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1D2129;
+  margin-bottom: 10rpx;
+}
+
+.feedback-desc {
+  font-size: 26rpx;
+  color: #86909C;
+}
+
+/* 表单卡片 */
+.form-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 2rpx 24rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 32rpx;
+}
+
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #1D2129;
+  font-weight: 500;
+  margin-bottom: 14rpx;
+}
+
+.required {
+  color: #E53E3E;
+  margin-right: 4rpx;
+}
+
+/* 选择器 */
+.form-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84rpx;
+  background: #F5F7FA;
+  border-radius: 14rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #1D2129;
+}
+
+.picker-arrow {
+  font-size: 32rpx;
+  color: #86909C;
+  transform: rotate(90deg);
+}
+
+/* 输入框 */
+.form-input {
+  width: 100%;
+  height: 84rpx;
+  background: #F5F7FA;
+  border-radius: 14rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #1D2129;
+  box-sizing: border-box;
+}
+
+/* 多行文本 */
+.form-textarea {
+  width: 100%;
+  min-height: 240rpx;
+  background: #F5F7FA;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx;
+  font-size: 28rpx;
+  color: #1D2129;
+  box-sizing: border-box;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 22rpx;
+  color: #86909C;
+  margin-top: 8rpx;
+}
+
+/* 提交区域 */
+.submit-wrap {
+  padding: 0 16rpx;
+}
+
+.btn-submit {
+  width: 100%;
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4096FF;
+  border-radius: 46rpx;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-submit:active {
+  background: #1677FF;
+}
+
+.btn-disabled {
+  background: #A0C8FF !important;
+}
+
+.submit-tip {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #86909C;
+  margin-top: 20rpx;
+}

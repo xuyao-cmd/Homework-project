@@ -1,0 +1,71 @@
+<!--pages/detail/detail.wxml - 活动详情页-->
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 活动头部 -->
+    <view class="detail-header">
+      <view class="status-tag {{statusClass}}">{{statusText}}</view>
+      <view class="detail-title">{{activity.title}}</view>
+    </view>
+
+    <!-- 基本信息卡片 -->
+    <view class="card info-card">
+      <view class="info-item">
+        <text class="info-label">🕐 活动时间</text>
+        <text class="info-value">{{activity.displayTime}}</text>
+      </view>
+      <view class="info-item" wx:if="{{activity.address}}">
+        <text class="info-label">📍 活动地点</text>
+        <text class="info-value">{{activity.address}}</text>
+      </view>
+    </view>
+
+    <!-- 活动介绍 -->
+    <view class="card desc-card" wx:if="{{activity.details}}">
+      <view class="section-title">📝 活动介绍</view>
+      <view class="desc-content">{{activity.details}}</view>
+    </view>
+
+    <!-- 报名进度 -->
+    <view class="card progress-card" wx:if="{{activity.maxParticipants > 0}}">
+      <view class="section-title">👥 报名情况</view>
+      <view class="progress-wrap">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{activity.signupPercent}}%;"></view>
+        </view>
+        <text class="progress-text">
+          已报名 {{signupCount}}/{{activity.maxParticipants}} 人
+        </text>
+      </view>
+    </view>
+
+    <!-- 底部报名按钮 -->
+    <view class="bottom-bar">
+      <button
+        wx:if="{{activity.status === 'ended'}}"
+        class="btn-disabled"
+        disabled
+      >活动已结束</button>
+      <button
+        wx:elif="{{isRegistered}}"
+        class="btn-registered"
+        disabled
+      >✓ 已报名</button>
+      <button
+        wx:elif="{{activity.maxParticipants > 0 && signupCount >= activity.maxParticipants}}"
+        class="btn-disabled"
+        disabled
+      >报名已满</button>
+      <button
+        wx:else
+        class="btn-primary btn-signup"
+        bindtap="onSignup"
+      >立即报名</button>
+    </view>
+  </block>
+</view>
