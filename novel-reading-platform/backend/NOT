@@ -1,0 +1,4 @@
+http://localhost:8761 - OK
+http://localhost:8080 - READY
+http://localhost:9001 - READY
+http://localhost:9002 - READY
